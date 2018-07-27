@@ -235,8 +235,8 @@
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     }
     
-    [[UILabel appearance] setSubstituteFontName:fontName];
-    [[UIButton appearance] setSubstituteFontName:fontName];
+    [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setSubstituteFontName:fontName];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setSubstituteFontName:fontName];
     
     [[self class] customizeButtonWithPrimaryColor:primaryColor secondaryColor:secondaryColor withContentStyle:contentStyle];
     [[self class] customizeBarButtonItemWithPrimaryColor:primaryColor fontName:fontName fontSize:18 contentStyle:contentStyle];
@@ -255,68 +255,35 @@
 
 #pragma mark - UIBarButtonItem
 
++ (UIColor *)contentColorForPrimaryColor:(UIColor *)primaryColor
+                            contentStyle:(UIContentStyle)contentStyle {
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
+    
+    return contentColor;
+}
+
 + (void)customizeBarButtonItemWithPrimaryColor:(UIColor *)primaryColor
                                   contentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
-    
-    [[UIBarButtonItem appearance] setTintColor:primaryColor];
-    [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:contentColor];
-    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:contentColor];
-    [[UIBarButtonItem appearanceWhenContainedIn:[UIToolbar class], nil] setTintColor:contentColor];
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:primaryColor];
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [self class]]] setTintColor:contentColor];
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class], [self class]]] setTintColor:contentColor];
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UIToolbar class], [self class]]] setTintColor:contentColor];
 }
 
 + (void)customizeBarButtonItemWithPrimaryColor:(UIColor *)primaryColor
                                       fontName:(NSString *)fontName
                                       fontSize:(float)fontSize
                                   contentStyle:(UIContentStyle)contentStyle {
-    
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
-    
-    [[UIBarButtonItem appearance] setTintColor:primaryColor];
-    [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:contentColor];
-    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:contentColor];
-    [[UIBarButtonItem appearanceWhenContainedIn:[UIToolbar class], nil] setTintColor:contentColor];
-    
-    
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
+    [self customizeBarButtonItemWithPrimaryColor:primaryColor contentStyle:contentStyle];
+
     if ([UIFont fontWithName:fontName size:fontSize]) {
-        [[UIBarButtonItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:contentColor, NSFontAttributeName:[UIFont fontWithName:fontName size:fontSize]} forState:UIControlStateNormal];
+        [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName:contentColor, NSFontAttributeName:[UIFont fontWithName:fontName size:fontSize]} forState:UIControlStateNormal];
     }
 }
 
@@ -325,43 +292,25 @@
 + (void)customizeButtonWithPrimaryColor:(UIColor *)primaryColor
                        withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
-    
-    [[UIButton appearance] setTintColor:contentColor];
-    [[UIButton appearance] setBackgroundColor:primaryColor];
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:contentColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBackgroundColor:primaryColor];
     
     
-    [[UIButton appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:contentColor];
-    [[UIButton appearanceWhenContainedIn:[UISearchBar class], nil] setBackgroundColor:ClearColor];
+    [[UIButton  appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [self class]]] setTintColor:contentColor];
+    [[UIButton  appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [self class]]] setBackgroundColor:ClearColor];
     
-    [[UIButton appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:contentColor];
-    [[UIButton appearanceWhenContainedIn:[UINavigationBar class], nil] setBackgroundColor:ClearColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class], [self class]]] setTintColor:contentColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class], [self class]]] setBackgroundColor:ClearColor];
     
-    [[UIButton appearanceWhenContainedIn:[UIToolbar class], nil] setTintColor:contentColor];
-    [[UIButton appearanceWhenContainedIn:[UIToolbar class], nil] setBackgroundColor:ClearColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIToolbar class], [self class]]] setTintColor:contentColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIToolbar class], [self class]]] setBackgroundColor:ClearColor];
     
-    [[UIButton appearanceWhenContainedIn:[UIStepper class], nil] setTintColor:primaryColor];
-    [[UIButton appearanceWhenContainedIn:[UIStepper class], nil] setBackgroundColor:ClearColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIStepper class], [self class]]] setTintColor:primaryColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIStepper class], [self class]]] setBackgroundColor:ClearColor];
     
-    [[UIButton appearance] setTitleShadowColor:ClearColor forState:UIControlStateNormal];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTitleShadowColor:ClearColor forState:UIControlStateNormal];
     
 }
 
@@ -394,23 +343,23 @@
         }
     }
     
-    [[UIButton appearance] setTintColor:secondaryContentColor];
-    [[UIButton appearance] setBackgroundColor:secondaryColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:secondaryContentColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBackgroundColor:secondaryColor];
     
     
-    [[UIButton appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:contentColor];
-    [[UIButton appearanceWhenContainedIn:[UISearchBar class], nil] setBackgroundColor:ClearColor];
+    [[UIButton  appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [self class]]] setTintColor:contentColor];
+    [[UIButton  appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [self class]]] setBackgroundColor:ClearColor];
     
-    [[UIButton appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:contentColor];
-    [[UIButton appearanceWhenContainedIn:[UINavigationBar class], nil] setBackgroundColor:ClearColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class], [self class]]] setTintColor:contentColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class], [self class]]] setBackgroundColor:ClearColor];
     
-    [[UIButton appearanceWhenContainedIn:[UIToolbar class], nil] setTintColor:contentColor];
-    [[UIButton appearanceWhenContainedIn:[UIToolbar class], nil] setBackgroundColor:ClearColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIToolbar class], [self class]]] setTintColor:contentColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIToolbar class], [self class]]] setBackgroundColor:ClearColor];
     
-    [[UIButton appearanceWhenContainedIn:[UIStepper class], nil] setTintColor:primaryColor];
-    [[UIButton appearanceWhenContainedIn:[UIStepper class], nil] setBackgroundColor:ClearColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIStepper class], [self class]]] setTintColor:primaryColor];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIStepper class], [self class]]] setBackgroundColor:ClearColor];
     
-    [[UIButton appearance] setTitleShadowColor:ClearColor forState:UIControlStateNormal];
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTitleShadowColor:ClearColor forState:UIControlStateNormal];
     
 }
 
@@ -418,38 +367,20 @@
 
 + (void)customizeImagePickerControllerWithPrimaryColor:(UIColor *)primaryColor withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
-    
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
     //Workaround for Swift http://stackoverflow.com/a/28765193
-    [[UIButton appearanceWhenContainedWithin:@[[UIView class],[UIImagePickerController class]]] setBackgroundColor:ClearColor];
-    [[UIButton appearanceWhenContainedWithin:@[[UIView class],[UIImagePickerController class]]] setTintColor:ClearColor];
-    [[UIButton appearanceWhenContainedWithin:@[[UINavigationBar class],[UIImagePickerController class]]] setBackgroundColor:ClearColor];
-    [[UIButton appearanceWhenContainedWithin:@[[UINavigationBar class],[UIImagePickerController class]]] setTintColor:contentColor];
-    [[UIButton appearanceWhenContainedWithin:@[[UITableViewCell class],[UIImagePickerController class]]] setBackgroundColor:ClearColor];
+    [[UIButton appearanceWhenContainedWithin:@[[UIView class],[UIImagePickerController class],[self class]]] setBackgroundColor:ClearColor];
+    [[UIButton appearanceWhenContainedWithin:@[[UIView class],[UIImagePickerController class],[self class]]] setTintColor:ClearColor];
+    [[UIButton appearanceWhenContainedWithin:@[[UINavigationBar class],[UIImagePickerController class],[self class]]] setBackgroundColor:ClearColor];
+    [[UIButton appearanceWhenContainedWithin:@[[UINavigationBar class],[UIImagePickerController class],[self class]]] setTintColor:contentColor];
+    [[UIButton appearanceWhenContainedWithin:@[[UITableViewCell class],[UIImagePickerController class],[self class]]] setBackgroundColor:ClearColor];
     
-    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIView class],[UIImagePickerController class]]] setBackgroundColor:ClearColor];
-    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIView class],[UIImagePickerController class]]] setTintColor:contentColor];
-    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class],[UIImagePickerController class]]] setBackgroundColor:ClearColor];
-    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class],[UIImagePickerController class]]] setTintColor:contentColor];
-    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UITableViewCell class],[UIImagePickerController class]]] setBackgroundColor:ClearColor];
+    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIView class],[UIImagePickerController class],[self class]] setBackgroundColor:ClearColor];
+    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UIView class],[UIImagePickerController class],[self class]] setTintColor:contentColor];
+    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class],[UIImagePickerController class],[self class]] setBackgroundColor:ClearColor];
+    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class],[UIImagePickerController class],[self class]] setTintColor:contentColor];
+    //[[UIButton appearanceWhenContainedInInstancesOfClasses:@[[UITableViewCell class],[UIImagePickerController class]] setBackgroundColor:ClearColor];
 }
 
 #pragma mark - UILabel
@@ -458,36 +389,17 @@
                               fontName:(NSString *)fontName
                               fontSize:(CGFloat)fontSize
                       withContentStyle:(UIContentStyle)contentStyle {
-    
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
-    
-    [[UILabel appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setTextColor:contentColor];
-    [[UILabel appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setTextColor:contentColor];
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
+    [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setTextColor:contentColor];
+    [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setTextColor:contentColor];
     
     UIFont *font = [UIFont fontWithName:fontName size:fontSize];
     
     if (font) {
-        [[UILabel appearanceWhenContainedIn:[self class], nil] setFont:[UIFont fontWithName:fontName size:fontSize]];
-        [[UILabel appearanceWhenContainedIn:[self class], [UITextField class], nil] setFont:[UIFont fontWithName:fontName size:14]];
-        [[UILabel appearanceWhenContainedIn:[self class], [UIButton class], nil] setFont:[UIFont fontWithName:fontName size:18]];
+        [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setFont:[UIFont fontWithName:fontName size:fontSize]];
+        [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[self class], [UITextField class]]] setFont:[UIFont fontWithName:fontName size:14]];
+        [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[self class], [UIButton class]]] setFont:[UIFont fontWithName:fontName size:18]];
     }
 }
 
@@ -496,42 +408,24 @@
 + (void)customizeNavigationBarWithPrimaryColor:(UIColor *)primaryColor
                               withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
-    
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setBarTintColor:primaryColor];
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setTintColor:contentColor];
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName:contentColor}];
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setShadowImage:[UIImage new]];
-//    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBarTintColor:primaryColor];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:contentColor];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTitleTextAttributes:@{NSForegroundColorAttributeName:contentColor}];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setShadowImage:[UIImage new]];
+//    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
 }
 
 + (void)customizeNavigationBarWithBarColor:(UIColor *)barColor
                                  textColor:(UIColor *)textColor
                                buttonColor:(UIColor *)buttonColor {
     
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setBarTintColor:barColor];
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setTintColor:buttonColor];
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName:textColor}];
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setShadowImage:[UIImage new]];
-//    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBarTintColor:barColor];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:buttonColor];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTitleTextAttributes:@{NSForegroundColorAttributeName:textColor}];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setShadowImage:[UIImage new]];
+//    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
 }
 
 + (void)customizeNavigationBarWithBarColor:(UIColor *)barColor
@@ -540,13 +434,13 @@
                                   fontSize:(CGFloat)fontSize
                                buttonColor:(UIColor *)buttonColor {
     
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setBarTintColor:barColor];
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setTintColor:buttonColor];
-    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setShadowImage:[UIImage new]];
-//    [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBarTintColor:barColor];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:buttonColor];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setShadowImage:[UIImage new]];
+//    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     
     if ([UIFont fontWithName:fontName size:fontSize]) {
-        [[UINavigationBar appearanceWhenContainedIn:[self class], nil] setTitleTextAttributes:@{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:[UIFont fontWithName:fontName size:fontSize] }];
+        [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:[UIFont fontWithName:fontName size:fontSize] }];
     }
 }
 
@@ -555,32 +449,14 @@
 + (void)customizePageControlWithPrimaryColor:(UIColor *)primaryColor
                             withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
     
-    [[UIPageControl appearanceWhenContainedIn:[self class], nil] setCurrentPageIndicatorTintColor:primaryColor];
-    [[UIPageControl appearanceWhenContainedIn:[self class], nil] setPageIndicatorTintColor:[primaryColor colorWithAlphaComponent:0.4]];
-    [[UIPageControl appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setCurrentPageIndicatorTintColor:contentColor];
-    [[UIPageControl appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setPageIndicatorTintColor:[contentColor colorWithAlphaComponent:0.4]];
-    [[UIPageControl appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setCurrentPageIndicatorTintColor:contentColor];
-    [[UIPageControl appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setPageIndicatorTintColor:[contentColor colorWithAlphaComponent:0.4]];
+    [[UIPageControl appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setCurrentPageIndicatorTintColor:primaryColor];
+    [[UIPageControl appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setPageIndicatorTintColor:[primaryColor colorWithAlphaComponent:0.4]];
+    [[UIPageControl appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setCurrentPageIndicatorTintColor:contentColor];
+    [[UIPageControl appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setPageIndicatorTintColor:[contentColor colorWithAlphaComponent:0.4]];
+    [[UIPageControl appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setCurrentPageIndicatorTintColor:contentColor];
+    [[UIPageControl appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setPageIndicatorTintColor:[contentColor colorWithAlphaComponent:0.4]];
 }
 
 #pragma mark - UIProgressView
@@ -588,73 +464,39 @@
 + (void)customizeProgressViewWithPrimaryColor:(UIColor *)primaryColor
                              withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
     
-    [[UIProgressView appearanceWhenContainedIn:[self class], nil] setProgressTintColor:primaryColor];
-    [[UIProgressView appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setProgressTintColor:contentColor];
-    [[UIProgressView appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setProgressTintColor:contentColor];
-    [[UIProgressView appearanceWhenContainedIn:[self class], nil] setTrackTintColor:[UIColor lightGrayColor]];
-    [[UIProgressView appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
-    [[UIProgressView appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setProgressTintColor:primaryColor];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setProgressTintColor:contentColor];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setProgressTintColor:contentColor];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTrackTintColor:[UIColor lightGrayColor]];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
 }
 
 + (void)customizeProgressViewWithPrimaryColor:(UIColor *)primaryColor
                             andSecondaryColor:(UIColor *)secondaryColor {
     
-    [[UIProgressView appearanceWhenContainedIn:[self class], nil] setProgressTintColor:secondaryColor];
-    [[UIProgressView appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setProgressTintColor:secondaryColor];
-    [[UIProgressView appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setProgressTintColor:secondaryColor];
-    [[UIProgressView appearanceWhenContainedIn:[self class], nil] setTrackTintColor:[UIColor lightGrayColor]];
-    [[UIProgressView appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
-    [[UIProgressView appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setProgressTintColor:secondaryColor];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setProgressTintColor:secondaryColor];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setProgressTintColor:secondaryColor];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTrackTintColor:[UIColor lightGrayColor]];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UIProgressView appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
 }
 
 #pragma mark - UISearchBar
 
 + (void)customizeSearchBarWithPrimaryColor:(UIColor *)primaryColor withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
     
-    [[UISearchBar appearanceWhenContainedIn:[self class], nil] setBarTintColor:primaryColor];
-    [[UISearchBar appearanceWhenContainedIn:[self class], nil] setBackgroundColor:primaryColor];
-    [[UISearchBar appearanceWhenContainedIn:[self class], nil] setTintColor:contentColor];
-    [[UISearchBar appearanceWhenContainedIn:[self class], nil] setBackgroundImage:[UIImage new] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [[UISearchBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBarTintColor:primaryColor];
+    [[UISearchBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBackgroundColor:primaryColor];
+    [[UISearchBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:contentColor];
+    [[UISearchBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBackgroundImage:[UIImage new] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - UISegmentedControl
@@ -662,30 +504,13 @@
 + (void)customizeSegmentedControlWithPrimaryColor:(UIColor *)primaryColor
                                  withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
     
-    [[UISegmentedControl appearanceWhenContainedIn:[self class], nil] setTintColor:primaryColor];
-    [[UISegmentedControl appearanceWhenContainedIn:[self class], [UINavigationBar class], nil]
+    [[UISegmentedControl appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:primaryColor];
+    [[UISegmentedControl appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]]
      setTintColor:contentColor];
-    [[UISegmentedControl appearanceWhenContainedIn:[self class], [UIToolbar class], nil]
+    [[UISegmentedControl appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]]
      setTintColor:contentColor];
 }
 
@@ -694,35 +519,18 @@
                                      withFontSize:(CGFloat)fontSize
                                  withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
     
-    [[UISegmentedControl appearanceWhenContainedIn:[self class], nil] setTintColor:primaryColor];
-    [[UISegmentedControl appearanceWhenContainedIn:[self class], [UINavigationBar class], nil]
+    [[UISegmentedControl appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:primaryColor];
+    [[UISegmentedControl appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]]
      setTintColor:contentColor];
-    [[UISegmentedControl appearanceWhenContainedIn:[self class], [UIToolbar class], nil]
+    [[UISegmentedControl appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]]
      setTintColor:contentColor];
     
     UIFont *font = [UIFont fontWithName:fontName size:fontSize];
     if (font) {
-        [[UISegmentedControl appearanceWhenContainedIn:[self class], nil] setTitleTextAttributes:@{NSFontAttributeName:font}
+        [[UISegmentedControl appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTitleTextAttributes:@{NSFontAttributeName:font}
                                                                                         forState:UIControlStateNormal];
     }
 }
@@ -732,43 +540,26 @@
 + (void)customizeSliderWithPrimaryColor:(UIColor *)primaryColor
                        withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
     
-    [[UISlider appearanceWhenContainedIn:[self class], nil] setMinimumTrackTintColor:primaryColor];
-    [[UISlider appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setMinimumTrackTintColor:contentColor];
-    [[UISlider appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setMinimumTrackTintColor:contentColor];
-    [[UISlider appearanceWhenContainedIn:[self class], nil] setMaximumTrackTintColor:[UIColor lightGrayColor]];
-    [[UISlider appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setMaximumTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
-    [[UISlider appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setMaximumTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setMinimumTrackTintColor:primaryColor];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setMinimumTrackTintColor:contentColor];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setMinimumTrackTintColor:contentColor];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setMaximumTrackTintColor:[UIColor lightGrayColor]];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setMaximumTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setMaximumTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
 }
 
 + (void)customizeSliderWithPrimaryColor:(UIColor *)primaryColor
                       andSecondaryColor:(UIColor *)secondaryColor {
     
-    [[UISlider appearanceWhenContainedIn:[self class], nil] setMinimumTrackTintColor:secondaryColor];
-    [[UISlider appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setMinimumTrackTintColor:secondaryColor];
-    [[UISlider appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setMinimumTrackTintColor:secondaryColor];
-    [[UISlider appearanceWhenContainedIn:[self class], nil] setMaximumTrackTintColor:[UIColor lightGrayColor]];
-    [[UISlider appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setMaximumTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
-    [[UISlider appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setMaximumTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setMinimumTrackTintColor:secondaryColor];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setMinimumTrackTintColor:secondaryColor];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setMinimumTrackTintColor:secondaryColor];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setMaximumTrackTintColor:[UIColor lightGrayColor]];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setMaximumTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setMaximumTrackTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
 }
 
 #pragma mark - UIStepper
@@ -776,30 +567,13 @@
 + (void)customizeStepperWithPrimaryColor:(UIColor *)primaryColor
                         withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
     
-    [[UIStepper appearanceWhenContainedIn:[self class], nil] setTintColor:primaryColor];
-    [[UIStepper appearanceWhenContainedIn:[self class], [UINavigationBar class], nil]
+    [[UIStepper appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:primaryColor];
+    [[UIStepper appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]]
      setTintColor:contentColor];
-    [[UIStepper appearanceWhenContainedIn:[self class], [UIToolbar class], nil]
+    [[UIStepper appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]]
      setTintColor:contentColor];
 }
 
@@ -807,17 +581,17 @@
 
 + (void)customizeSwitchWithPrimaryColor:(UIColor *)primaryColor {
     
-    [[UISwitch appearanceWhenContainedIn:[self class], nil] setOnTintColor:primaryColor];
-    [[UISwitch appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setOnTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
-    [[UISwitch appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setOnTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UISwitch appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setOnTintColor:primaryColor];
+    [[UISwitch appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setOnTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
+    [[UISwitch appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setOnTintColor:[[primaryColor darkenByPercentage:0.25] flatten]];
 }
 
 + (void)customizeSwitchWithPrimaryColor:(UIColor *)primaryColor
                       andSecondaryColor:(UIColor *)secondaryColor {
     
-    [[UISwitch appearanceWhenContainedIn:[self class], nil] setOnTintColor:secondaryColor];
-    [[UISwitch appearanceWhenContainedIn:[self class], [UINavigationBar class], nil] setOnTintColor:secondaryColor];
-    [[UISwitch appearanceWhenContainedIn:[self class], [UIToolbar class], nil] setOnTintColor:secondaryColor];
+    [[UISwitch appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setOnTintColor:secondaryColor];
+    [[UISwitch appearanceWhenContainedInInstancesOfClasses:@[[self class],[UINavigationBar class]]] setOnTintColor:secondaryColor];
+    [[UISwitch appearanceWhenContainedInInstancesOfClasses:@[[self class],[UIToolbar class]]] setOnTintColor:secondaryColor];
 }
 
 #pragma mark - UITabBar
@@ -825,8 +599,8 @@
 + (void)customizeTabBarWithBarTintColor:(UIColor *)barTintColor
                            andTintColor:(UIColor *)tintColor {
     
-    [[UITabBar appearanceWhenContainedIn:[self class], nil] setBarTintColor:barTintColor];
-    [[UITabBar appearanceWhenContainedIn:[self class], nil] setTintColor:tintColor];
+    [[UITabBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBarTintColor:barTintColor];
+    [[UITabBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:tintColor];
 }
 
 + (void)customizeTabBarWithBarTintColor:(UIColor *)barTintColor
@@ -834,12 +608,12 @@
                                fontName:(NSString *)fontName
                                fontSize:(CGFloat)fontSize {
     
-    [[UITabBar appearanceWhenContainedIn:[self class], nil] setBarTintColor:barTintColor];
-    [[UITabBar appearanceWhenContainedIn:[self class], nil] setTintColor:tintColor];
+    [[UITabBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBarTintColor:barTintColor];
+    [[UITabBar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:tintColor];
     
     UIFont *font = [UIFont fontWithName:fontName size:fontSize];
     if (font) {
-        [[UITabBarItem appearanceWhenContainedIn:[self class], nil] setTitleTextAttributes:@{NSFontAttributeName:font}
+        [[UITabBarItem appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTitleTextAttributes:@{NSFontAttributeName:font}
                                                                                   forState:UIControlStateNormal];
     }
 }
@@ -849,29 +623,11 @@
 + (void)customizeToolbarWithPrimaryColor:(UIColor *)primaryColor
                         withContentStyle:(UIContentStyle)contentStyle {
     
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
-    
-    [[UIToolbar appearanceWhenContainedIn:[self class], nil] setTintColor:contentColor];
-    [[UIToolbar appearanceWhenContainedIn:[self class], nil] setBarTintColor:primaryColor];
-    [[UIToolbar appearanceWhenContainedIn:[self class], nil] setClipsToBounds:YES];
+    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
+
+    [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setTintColor:contentColor];
+    [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setBarTintColor:primaryColor];
+    [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[[self class]]] setClipsToBounds:YES];
 }
 
 
