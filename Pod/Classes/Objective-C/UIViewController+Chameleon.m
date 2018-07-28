@@ -255,30 +255,7 @@
 
 #pragma mark - UIBarButtonItem
 
-+ (UIColor *)contentColorForPrimaryColor:(UIColor *)primaryColor
-                            contentStyle:(UIContentStyle)contentStyle {
-    UIColor *contentColor;
-    switch (contentStyle) {
-        case UIContentStyleContrast: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-        case UIContentStyleLight: {
-            contentColor = [UIColor whiteColor];
-            break;
-        }
-        case UIContentStyleDark: {
-            contentColor = FlatBlackDark;
-            break;
-        }
-        default: {
-            contentColor = ContrastColor(primaryColor, NO);
-            break;
-        }
-    }
-    
-    return contentColor;
-}
+
 
 + (void)customizeBarButtonItemWithPrimaryColor:(UIColor *)primaryColor
                                   contentStyle:(UIContentStyle)contentStyle {
@@ -659,6 +636,33 @@
     luminance = red + green + blue;
     
     return (luminance > 0.6f) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+}
+
+#pragma mark -
+
++ (UIColor *)contentColorForPrimaryColor:(UIColor *)primaryColor
+                            contentStyle:(UIContentStyle)contentStyle {
+    UIColor *contentColor;
+    switch (contentStyle) {
+        case UIContentStyleContrast: {
+            contentColor = ContrastColor(primaryColor, NO);
+            break;
+        }
+        case UIContentStyleLight: {
+            contentColor = [UIColor whiteColor];
+            break;
+        }
+        case UIContentStyleDark: {
+            contentColor = FlatBlackDark;
+            break;
+        }
+        default: {
+            contentColor = ContrastColor(primaryColor, NO);
+            break;
+        }
+    }
+    
+    return contentColor;
 }
 
 #pragma GCC diagnostic pop
