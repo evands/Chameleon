@@ -257,8 +257,25 @@
 
 + (UIColor *)contentColorForPrimaryColor:(UIColor *)primaryColor
                             contentStyle:(UIContentStyle)contentStyle {
-    UIColor *contentColor = [self contentColorForPrimaryColor:primaryColor contentStyle:contentStyle];
-
+    UIColor *contentColor;
+    switch (contentStyle) {
+        case UIContentStyleContrast: {
+            contentColor = ContrastColor(primaryColor, NO);
+            break;
+        }
+        case UIContentStyleLight: {
+            contentColor = [UIColor whiteColor];
+            break;
+        }
+        case UIContentStyleDark: {
+            contentColor = FlatBlackDark;
+            break;
+        }
+        default: {
+            contentColor = ContrastColor(primaryColor, NO);
+            break;
+        }
+    }
     
     return contentColor;
 }
